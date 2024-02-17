@@ -1,0 +1,6 @@
+shapely.geometry
+plotly.express
+dash
+dash.dependencies
+pandas
+geopandas
