@@ -5,3 +5,4 @@ pandas
 geopandas
 gdown
 requests
+gunicorn==21.2.0
