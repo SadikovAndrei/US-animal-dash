@@ -1,6 +1,8 @@
-shapely.geometry
-plotly.express
+shapely
+plotly
 dash
-dash.dependencies
 pandas
 geopandas
+gdown
+requests
+random
