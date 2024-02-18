@@ -61,7 +61,7 @@ value = list_names[0]
 random_value = random.choice(list_names)
 
 app = dash.Dash(__name__)
-
+server = app.server
 
 app.layout = html.Div(style={'backgroundColor': bgcolor},children=[html.H1('Some endangered species of USA',
                                         style={'textAlign': 'center',
