@@ -1,69 +1,33 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# source = 'https://ecos.fws.gov/ecp/report/table/critical-habitat.html#:~:text=A-,zip%20file,-containing%20two%20shapefiles' from here you should extract the shp file
 
-# In[3]:
 
 
 #!pip install  pandas geopandas requests 
-
-
-# In[ ]:
-
 
 import pandas as pd
 import geopandas as gpd
 import requests
 import re
 
+#source - from here you should extract the shp file:
+#source= 'https://ecos.fws.gov/ecp/report/table/critical-habitat.html#:~:text=A-,zip%20file,-containing%20two%20shapefiles' 
+shape_file = '/Users/andrei/Downloads/crithab_all_layers/crithab_poly.shp' #This is the link to the chape file
 
-# In[37]:
-
-
-url = '/Users/andrei/Downloads/crithab_all_layers/crithab_poly.shp'
-
-gdf = gpd.read_file(url)
-
-
-# In[38]:
-
-
-gdf.columns
-
-
-# In[39]:
-
+gdf = gpd.read_file(shape_file)
 
 gdf.drop(columns=['unit', 'subunit', 'unitname', 'subunitnam','coopoffice', 'coopofmore', 'fedreg', 'effectdate',
        'vacatedate', 'accuracy','spcode', 'vipcode','leadoffice','source_id','objectid'],inplace = True)
-
-
-# In[40]:
-
-
+#Excluding some values that either don't have picture or don't have a correct habitat
 values_to_exclude = ['Chelonia mydas', 'Etheostoma phytophilum', 'Corvus kubaryi', 'Lepidomeda vittata', 'Catostomus warnerensis', 'Charadrius nivosus nivosus', 'Rana muscosa','Zosterops rotensis']
 
 gdf = gdf[~gdf['sciname'].isin(values_to_exclude)]
-gdf
-
-
-# In[41]:
-
-
+#dropping  duplicate values
 gdf.drop_duplicates(subset=None, keep='first', inplace=True)
-gdf
-
-
-# In[42]:
-
 
 list_names = gdf['sciname'].to_list()
-
-
-# In[29]:
-
-
+# Using wikipedia API retrieving image links
 url_img_list = []
 for i,row in enumerate(list_names):
     page_title = list_names[i]
@@ -102,9 +66,6 @@ for i,row in enumerate(list_names):
         image_url = data['query']['pages'][page_id].get('original', {}).get('source', None)
         url_img_list.append(image_url)
 url_img_list
-
-
-# In[43]:
 
 
 url_img_list = [None,
